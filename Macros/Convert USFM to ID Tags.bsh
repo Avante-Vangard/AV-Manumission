@@ -1,0 +1,214 @@
+// Liberate 1503 - Alpha rev on Jedit Macros
+// This should convert most USFM files into a usable idtag file. 
+// ============================================
+// ===                   PRESOAK CYCLE                            ===
+// ============================================
+// ============ Character Substitutions ========================
+// -- extraneous returns
+SearchAndReplace.setSearchString("\\n([^\\\\])");
+SearchAndReplace.setReplaceString(" $1");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+// ==================================
+// ===    Indesign to  IDTag Conversion  ===
+// ==================================
+// === Verse markers rearranged to their published order. ==========
+// -- returns before \v
+SearchAndReplace.setSearchString("\\n(\\\\v)");
+SearchAndReplace.setReplaceString(" $1");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+// -- \vp replaces \v
+SearchAndReplace.setSearchString("(\\\\v )([^ ]+) (\\\\vp )([^ ]+) ");
+SearchAndReplace.setReplaceString("$1$4 $3$2");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+// -- space after \fv and \v
+SearchAndReplace.setSearchString("(\\\\f*v*) ");
+SearchAndReplace.setReplaceString(" $1 ");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+// === Chapter markers rearranged to their published order. ========
+// -- \cp replaces \c
+SearchAndReplace.setSearchString("(^\\\\c )(.+$)\\n(\\\\cp )(.+$)");
+SearchAndReplace.setReplaceString("$1$4 $3$2");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+// -- not supporting early \cl in L1503 manual convert to late \cl is prerequisite
+// -- late \cl moves before \c (character style)
+SearchAndReplace.setSearchString("(^\\\\c .+$)\\n(\\\\cl .+$)");
+SearchAndReplace.setReplaceString("$2 $1");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+// -- Delete returns after \c 
+SearchAndReplace.setSearchString("(^\\\\c .+$\\n)(\\\\ms.+$\\n)");
+SearchAndReplace.setReplaceString("$2$1");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("(^\\\\c .+$\\n)(\\\\s.+$\\n)");
+SearchAndReplace.setReplaceString("$2$1");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("(^\\\\c .+$\\n)(\\\\r.+$\\n)");
+SearchAndReplace.setReplaceString("$2$1");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("(^\\\\c .+$\\n)(\\\\d.+$\\n)");
+SearchAndReplace.setReplaceString("$2$1");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("(^\\\\c ) *([0-9]+)");
+SearchAndReplace.setReplaceString("$1$1$2 \\\\c\\*");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("(^\\\\c .+$)\\n");
+SearchAndReplace.setReplaceString("$1");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+textArea.goToBufferStart(false);
+// --- Indesign Header ---
+SearchAndReplace.setSearchString("^\\\\id ");
+SearchAndReplace.setReplaceString("\ufeff<UNICODE-MAC>\n<Version:10><FeatureSet:Indesign-Roman><ColorTable:=<Black:COLOR:CMYK:Process:0,0,0,1><Gray:COLOR:CMYK:Process:0,0,0,0.5><Red:COLOR:CMYK:Process:0,0.9,0.9,0.1><WOJ:COLOR:CMYK:Process:0,0.9,0.9,0.1><Blue:COLOR:CMYK:Process:0.9,0.9,0,0.1>>\n<DefineCharStyle:DefaultSerif=<Nextstyle:DefaultSerif><cColor:Red><cFont:PT Serif><cColor:Red>>\n<DefineCharStyle:DefaultSans=<cFont:PT Sans><cColor:Red><pMinWordSpace:0.85>>\n<DefineCharStyle:rem=<BasedOn:DefaultSerif><Nextstyle:rem><cColor:None><cSize:0.1><cHorizontalScale:0.01>>\n<DefineCharStyle:fig=<BasedOn:rem><Nextstyle:fig>>\n<DefineCharStyle:fs=<BasedOn:rem><Nextstyle:fs>>\n<DefineCharStyle:cat=<BasedOn:rem><Nextstyle:cat>>\n<DefineCharStyle:⁻=<BasedOn:rem><Nextstyle:⁻>>\n<DefineCharStyle:ft=<BasedOn:DefaultSans><Nextstyle:ft><cSize:8.6><cLeading:10.2><cFont:PT Sans Caption><cAutoPairKern:Optical>>\n<DefineCharStyle:⁺=<BasedOn:ft><Nextstyle:⁺><cPosition:Superscript>>\n<DefineCharStyle:fk=<BasedOn:ft><Nextstyle:fk><cTypeface:Bold>>\n<DefineCharStyle:fl=<BasedOn:ft><Nextstyle:fl><cTypeface:Bold>>\n<DefineCharStyle:fm=<BasedOn:⁺><Nextstyle:fm>>\n<DefineCharStyle:fq=<BasedOn:ft><Nextstyle:fq><cTypeface:Italic>>\n<DefineCharStyle:fqa=<BasedOn:fq><Nextstyle:fqa>>\n<DefineCharStyle:fr=<BasedOn:ft><Nextstyle:fr><cTypeface:Bold Italic>>\n<DefineCharStyle:fv=<BasedOn:ft><Nextstyle:fv><cPosition:Superscript>>\n<DefineCharStyle:xk=<BasedOn:fk><Nextstyle:xk>>\n<DefineCharStyle:xo=<BasedOn:fk><Nextstyle:xo>>\n<DefineCharStyle:xq=<BasedOn:fr><Nextstyle:xq>>\n<DefineCharStyle:xt=<BasedOn:ft><Nextstyle:xt>>\n<DefineCharStyle:c=<BasedOn:DefaultSans><Nextstyle:c><cTypeface:Bold><cColor:Gray>>\n<DefineCharStyle:ca=<BasedOn:c><Nextstyle:ca>>\n<DefineCharStyle:cp=<BasedOn:c><Nextstyle:cp>>\n<DefineCharStyle:ior=<BasedOn:DefaultSans><Nextstyle:ior><cTypeface:Italic>>\n<DefineCharStyle:iqt=<BasedOn:ior><Nextstyle:iqt>>\n<DefineCharStyle:v=<BasedOn:DefaultSerif><Nextstyle:v><cSize:8.6><cLeading:10.2><cFont:PT Serif Caption><cAutoPairKern:Optical><cPosition:Superscript>>\n<DefineCharStyle:va=<BasedOn:v><Nextstyle:va>>\n<DefineCharStyle:vp=<BasedOn:v><Nextstyle:vp>>\n<DefineCharStyle:_=<BasedOn:DefaultSerif><Nextstyle:_><cNoBreak:1>>\n<DefineCharStyle:no=<BasedOn:DefaultSerif><Nextstyle:no>>\n<DefineCharStyle:add=<BasedOn:no><Nextstyle:add><cTypeface:Italic>>\n<DefineCharStyle:dc=<BasedOn:no><Nextstyle:dc><cTypeface:Italic>>\n<DefineCharStyle:em=<BasedOn:no><Nextstyle:em><cUnderline:1>>\n<DefineCharStyle:k=<BasedOn:no><Nextstyle:k><cUnderline:1>>\n<DefineCharStyle:nd=<BasedOn:no><Nextstyle:nd><cCase:Small Caps>>\n<DefineCharStyle:ndx=<BasedOn:no><Nextstyle:ndx><cUnderline:1>>\n<DefineCharStyle:ord=<BasedOn:no><Nextstyle:ord><cPosition:Superscript>>\n<DefineCharStyle:pn=<BasedOn:no><Nextstyle:pn>>\n<DefineCharStyle:pro=<BasedOn:no><Nextstyle:pro>>\n<DefineCharStyle:qac=<BasedOn:no><Nextstyle:qac><cTypeface:Bold Italic>>\n<DefineCharStyle:qs=<BasedOn:no><Nextstyle:qs><cTypeface:Italic>>\n<DefineCharStyle:qt=<BasedOn:no><Nextstyle:qt><cTypeface:Italic>>\n<DefineCharStyle:rq=<BasedOn:no><Nextstyle:rq><cTypeface:Italic>>\n<DefineCharStyle:sig=<BasedOn:no><Nextstyle:sig><cTypeface:Bold Italic>>\n<DefineCharStyle:sls=<BasedOn:no><Nextstyle:sls><cTypeface:Italic>>\n<DefineCharStyle:tl=<BasedOn:no><Nextstyle:tl><cTypeface:Italic>>\n<DefineCharStyle:w=<BasedOn:no><Nextstyle:w><cUnderline:1>>\n<DefineCharStyle:wg=<BasedOn:no><Nextstyle:wg><cUnderline:1>>\n<DefineCharStyle:wh=<BasedOn:no><Nextstyle:wh><cUnderline:1>>\n<DefineCharStyle:wj=<BasedOn:no><Nextstyle:wj><cColor:WOJ>>\n<DefineCharStyle:z=<BasedOn:no><Nextstyle:z>>\n<DefineCharStyle:bd=<Nextstyle:bd><cTypeface:Bold>>\n<DefineCharStyle:bdit=<BasedOn:DefaultSerif><Nextstyle:bdit><cTypeface:Bold Italic>>\n<DefineCharStyle:bk=<BasedOn:DefaultSerif><Nextstyle:bk><cTypeface:Italic>>\n<DefineCharStyle:it=<BasedOn:DefaultSerif><Nextstyle:it><cTypeface:Italic>>\n<DefineCharStyle:sc=<Nextstyle:sc><cCase:Small Caps>>\n<DefineParaStyle:default=<Nextstyle:default><cSize:12.2><cLeading:14.4><cFont:PT Serif><pMinWordSpace:0.85><pMaxLetterspace:0.03><pMinLetterspace:-0.01><pMaxGlyphScale:1.02><pMinGlyphScale:0.99><pKeepLines:1><pHyphenateLastWord:0><pHyphenateCrossFrame:0>>\n<DefineParaStyle:defaultSans=<BasedOn:default><Nextstyle:defaultSans><cFont:PT Sans>>\n<DefineParaStyle:defaultSerif=<BasedOn:default><Nextstyle:defaultSerif>>\n<DefineParaStyle:defaultFoot=<BasedOn:default><Nextstyle:defaultFoot><cSize:8.6><cLeading:10.2><cFont:PT Sans Caption>>\n<DefineParaStyle:defaultSlab=<BasedOn:default><Nextstyle:defaultSlab><cSize:12.2><cLeading:14.4><cFont:Roboto Slab>>\n<DefineParaStyle:rem=<BasedOn:default><Nextstyle:rem><cColor:None><cSize:0.1><cHorizontalScale:0.01><cLeading:0.0>>\n<DefineParaStyle:b=<BasedOn:rem><Nextstyle:b><cLeading:7.2>>\n<DefineParaStyle:b0=<BasedOn:rem><Nextstyle:b0><cLeading:10.2>>\n<DefineParaStyle:b1=<BasedOn:rem><Nextstyle:b1><cLeading:14.4>>\n<DefineParaStyle:b2=<BasedOn:rem><Nextstyle:b2><cLeading:21.6>>\n<DefineParaStyle:b3=<BasedOn:rem><Nextstyle:b3><cLeading:28.8>>\n<DefineParaStyle:b4=<BasedOn:rem><Nextstyle:b4><cLeading:36.0>>\n<DefineParaStyle:b5=<BasedOn:rem><Nextstyle:b5><cLeading:43.2>>\n<DefineParaStyle:b6=<BasedOn:rem><Nextstyle:b6><cLeading:50.4>>\n<DefineParaStyle:b7=<BasedOn:rem><Nextstyle:b7><cLeading:57.6>>\n<DefineParaStyle:b8=<BasedOn:rem><Nextstyle:b8><cLeading:64.8>>\n<DefineParaStyle:b9=<BasedOn:rem><Nextstyle:b9><cLeading:72.0>>\n<DefineParaStyle:h=<BasedOn:rem><Nextstyle:h>>\n<DefineParaStyle:h0=<BasedOn:rem><Nextstyle:h0>>\n<DefineParaStyle:h1=<BasedOn:rem><Nextstyle:h1>>\n<DefineParaStyle:h2=<BasedOn:rem><Nextstyle:h2>>\n<DefineParaStyle:h3=<BasedOn:rem><Nextstyle:h3>>\n<DefineParaStyle:h4=<BasedOn:rem><Nextstyle:h4>>\n<DefineParaStyle:h5=<BasedOn:rem><Nextstyle:h5>>\n<DefineParaStyle:h6=<BasedOn:rem><Nextstyle:h6>>\n<DefineParaStyle:h7=<BasedOn:rem><Nextstyle:h7>>\n<DefineParaStyle:h8=<BasedOn:rem><Nextstyle:h8>>\n<DefineParaStyle:h9=<BasedOn:rem><Nextstyle:h9>>\n<DefineParaStyle:ib=<BasedOn:rem><Nextstyle:ib><cLeading:7.2>>\n<DefineParaStyle:ib0=<BasedOn:rem><Nextstyle:ib0><cLeading:10.2>>\n<DefineParaStyle:ib1=<BasedOn:rem><Nextstyle:ib1><cLeading:14.4>>\n<DefineParaStyle:ib2=<BasedOn:rem><Nextstyle:ib2><cLeading:21.6>>\n<DefineParaStyle:ib3=<BasedOn:rem><Nextstyle:ib3><cLeading:28.8>>\n<DefineParaStyle:ib4=<BasedOn:rem><Nextstyle:ib4><cLeading:36.0>>\n<DefineParaStyle:ib5=<BasedOn:rem><Nextstyle:ib5><cLeading:43.2>>\n<DefineParaStyle:ib6=<BasedOn:rem><Nextstyle:ib6><cLeading:50.4>>\n<DefineParaStyle:ib7=<BasedOn:rem><Nextstyle:ib7><cLeading:57.6>>\n<DefineParaStyle:ib8=<BasedOn:rem><Nextstyle:ib8><cLeading:54.8>>\n<DefineParaStyle:ib9=<BasedOn:rem><Nextstyle:ib9><cLeading:72.0>>\n<DefineParaStyle:id=<BasedOn:rem><Nextstyle:id>>\n<DefineParaStyle:ide=<BasedOn:rem><Nextstyle:ide>>\n<DefineParaStyle:pb=<BasedOn:rem><Nextstyle:pb><pBreakBefore:Page>>\n<DefineParaStyle:periph=<BasedOn:rem><Nextstyle:periph>>\n<DefineParaStyle:sts=<BasedOn:rem><Nextstyle:sts>>\n<DefineParaStyle:toc=<BasedOn:rem><Nextstyle:toc0>>\n<DefineParaStyle:toc0=<BasedOn:rem><Nextstyle:toc1>>\n<DefineParaStyle:toc1=<BasedOn:rem><Nextstyle:toc2>>\n<DefineParaStyle:toc2=<BasedOn:rem><Nextstyle:toc3>>\n<DefineParaStyle:toc3=<BasedOn:rem><Nextstyle:toc4>>\n<DefineParaStyle:toc4=<BasedOn:rem><Nextstyle:toc5>>\n<DefineParaStyle:toc5=<BasedOn:rem><Nextstyle:toc6>>\n<DefineParaStyle:toc6=<BasedOn:rem><Nextstyle:toc7>>\n<DefineParaStyle:toc7=<BasedOn:rem><Nextstyle:toc8>>\n<DefineParaStyle:toc8=<BasedOn:rem><Nextstyle:toc9>>\n<DefineParaStyle:toc9=<BasedOn:rem><Nextstyle:p>>\n<DefineParaStyle:ef=<BasedOn:defaultSans><Nextstyle:ef><cSize:8.6><cLeading:10.2><cFont:PT Sans Caption><cAutoPairKern:Optical>>\n<DefineParaStyle:fp=<BasedOn:ef><Nextstyle:fp>>\n<DefineParaStyle:im=<BasedOn:defaultSans><Nextstyle:im>>\n<DefineParaStyle:c=<BasedOn:im><Nextstyle:c><cTypeface:Bold><cColor:Gray><pDropCapCharacters:5><pDropCapLines:2><pTabRuler:None><pDropCapDetail:LeftGlyphEdge>>\n<DefineParaStyle:cd=<BasedOn:im><Nextstyle:cd><pFirstLineIndent:0.0><pBalanceLines:1><pTextAlignment:Center>>\n<DefineParaStyle:d=<BasedOn:im><Nextstyle:d>>\n<DefineParaStyle:erq=<BasedOn:im><Nextstyle:erq>>\n<DefineParaStyle:ie=<BasedOn:im><Nextstyle:ie>>\n<DefineParaStyle:iex=<BasedOn:im><Nextstyle:iex>>\n<DefineParaStyle:ili=<BasedOn:im><Nextstyle:ili>>\n<DefineParaStyle:ili0=<BasedOn:ili><Nextstyle:ili0>>\n<DefineParaStyle:ili1=<BasedOn:ili><Nextstyle:ili1>>\n<DefineParaStyle:ili2=<BasedOn:ili><Nextstyle:ili2>>\n<DefineParaStyle:ili3=<BasedOn:ili><Nextstyle:ili3>>\n<DefineParaStyle:ili4=<BasedOn:ili><Nextstyle:ili4>>\n<DefineParaStyle:ili5=<BasedOn:ili><Nextstyle:ili5>>\n<DefineParaStyle:ili6=<BasedOn:ili><Nextstyle:ili6>>\n<DefineParaStyle:ili7=<BasedOn:ili><Nextstyle:ili7>>\n<DefineParaStyle:ili8=<BasedOn:ili><Nextstyle:ili8>>\n<DefineParaStyle:ili9=<BasedOn:ili><Nextstyle:ili9>>\n<DefineParaStyle:imi=<BasedOn:im><Nextstyle:imi>>\n<DefineParaStyle:imq=<BasedOn:im><Nextstyle:imq>>\n<DefineParaStyle:io=<BasedOn:im><Nextstyle:io>>\n<DefineParaStyle:io0=<BasedOn:io><Nextstyle:io0>>\n<DefineParaStyle:io1=<BasedOn:io><Nextstyle:io1>>\n<DefineParaStyle:io2=<BasedOn:io><Nextstyle:io2>>\n<DefineParaStyle:io3=<BasedOn:io><Nextstyle:io3>>\n<DefineParaStyle:io4=<BasedOn:io><Nextstyle:io4>>\n<DefineParaStyle:io5=<BasedOn:io><Nextstyle:io5>>\n<DefineParaStyle:io6=<BasedOn:io><Nextstyle:io6>>\n<DefineParaStyle:io7=<BasedOn:io><Nextstyle:io7>>\n<DefineParaStyle:io8=<BasedOn:io><Nextstyle:io8>>\n<DefineParaStyle:io9=<BasedOn:io><Nextstyle:io9>>\n<DefineParaStyle:iot=<BasedOn:im><Nextstyle:iot>>\n<DefineParaStyle:ip=<BasedOn:im><Nextstyle:ip><pFirstLineIndent:15>>\n<DefineParaStyle:ipi=<BasedOn:im><Nextstyle:ipi>>\n<DefineParaStyle:ipq=<BasedOn:im><Nextstyle:ipq>>\n<DefineParaStyle:ipr=<BasedOn:im><Nextstyle:ipr>>\n<DefineParaStyle:iq=<BasedOn:im><Nextstyle:iq><pTextAlignment:Center>>\n<DefineParaStyle:iq0=<BasedOn:iq><Nextstyle:iq0>>\n<DefineParaStyle:iq1=<BasedOn:iq><Nextstyle:iq1>>\n<DefineParaStyle:iq2=<BasedOn:iq><Nextstyle:iq2>>\n<DefineParaStyle:iq3=<BasedOn:iq><Nextstyle:iq3>>\n<DefineParaStyle:iq4=<BasedOn:iq><Nextstyle:iq4>>\n<DefineParaStyle:iq5=<BasedOn:iq><Nextstyle:iq5>>\n<DefineParaStyle:iq6=<BasedOn:iq><Nextstyle:iq6>>\n<DefineParaStyle:iq7=<BasedOn:iq><Nextstyle:iq7>>\n<DefineParaStyle:iq8=<BasedOn:iq><Nextstyle:iq8>>\n<DefineParaStyle:iq9=<BasedOn:iq><Nextstyle:iq9>>\n<DefineParaStyle:s=<BasedOn:im><Nextstyle:s><cTypeface:Bold><cSize:24.4><cLeading:28.8><pBreakBefore:None><pTextAlignment:Center>>\n<DefineParaStyle:s0=<BasedOn:s><Nextstyle:s0><cSize:17.3><cLeading:21.6><pSpaceBefore:10.500000><pBreakBefore:Page>>\n<DefineParaStyle:s1=<BasedOn:s><Nextstyle:s1>>\n<DefineParaStyle:s2=<BasedOn:s><Nextstyle:s2>>\n<DefineParaStyle:s3=<BasedOn:s><Nextstyle:s3>>\n<DefineParaStyle:s4=<BasedOn:s><Nextstyle:s4>>\n<DefineParaStyle:s5=<BasedOn:s><Nextstyle:s5>>\n<DefineParaStyle:s6=<BasedOn:s><Nextstyle:s6>>\n<DefineParaStyle:s7=<BasedOn:s><Nextstyle:s7>>\n<DefineParaStyle:s8=<BasedOn:s><Nextstyle:s8>>\n<DefineParaStyle:s9=<BasedOn:s><Nextstyle:s9>>\n<DefineParaStyle:sr=<BasedOn:im><Nextstyle:sr>>\n<DefineParaStyle:m=<BasedOn:defaultSerif><Nextstyle:m>>\n<DefineParaStyle:cls=<BasedOn:m><Nextstyle:cls>>\n<DefineParaStyle:li=<BasedOn:m><Nextstyle:li>>\n<DefineParaStyle:li0=<BasedOn:li><Nextstyle:li0>>\n<DefineParaStyle:li1=<BasedOn:li><Nextstyle:li1>>\n<DefineParaStyle:li2=<BasedOn:li><Nextstyle:li2>>\n<DefineParaStyle:li3=<BasedOn:li><Nextstyle:li3>>\n<DefineParaStyle:li4=<BasedOn:li><Nextstyle:li4>>\n<DefineParaStyle:li5=<BasedOn:li><Nextstyle:li5>>\n<DefineParaStyle:li6=<BasedOn:li><Nextstyle:li6>>\n<DefineParaStyle:li7=<BasedOn:li><Nextstyle:li7>>\n<DefineParaStyle:li8=<BasedOn:li><Nextstyle:li8>>\n<DefineParaStyle:li9=<BasedOn:li><Nextstyle:li9>>\n<DefineParaStyle:lit=<BasedOn:m><Nextstyle:lit>>\n<DefineParaStyle:mi=<BasedOn:m><Nextstyle:mi>>\n<DefineParaStyle:nb=<BasedOn:m><Nextstyle:nb>>\n<DefineParaStyle:p=<BasedOn:m><Nextstyle:p><pFirstLineIndent:15>>\n<DefineParaStyle:pc=<BasedOn:m><Nextstyle:pc><pBalanceLines:1><pTextAlignment:Center>>\n<DefineParaStyle:ph=<BasedOn:m><Nextstyle:ph>>\n<DefineParaStyle:ph0=<BasedOn:ph><Nextstyle:ph0>>\n<DefineParaStyle:ph1=<BasedOn:ph><Nextstyle:ph1>>\n<DefineParaStyle:ph2=<BasedOn:ph><Nextstyle:ph2>>\n<DefineParaStyle:ph3=<BasedOn:ph><Nextstyle:ph3>>\n<DefineParaStyle:ph4=<BasedOn:ph><Nextstyle:ph4>>\n<DefineParaStyle:ph5=<BasedOn:ph><Nextstyle:ph5>>\n<DefineParaStyle:ph6=<BasedOn:ph><Nextstyle:ph6>>\n<DefineParaStyle:ph7=<BasedOn:ph><Nextstyle:ph7>>\n<DefineParaStyle:ph8=<BasedOn:ph><Nextstyle:ph8>>\n<DefineParaStyle:ph9=<BasedOn:ph><Nextstyle:ph9>>\n<DefineParaStyle:pi=<BasedOn:m><Nextstyle:pi>>\n<DefineParaStyle:pi0=<BasedOn:pi><Nextstyle:pi0>>\n<DefineParaStyle:pi1=<BasedOn:pi><Nextstyle:pi1>>\n<DefineParaStyle:pi2=<BasedOn:pi><Nextstyle:pi2>>\n<DefineParaStyle:pi3=<BasedOn:pi><Nextstyle:pi3>>\n<DefineParaStyle:pi4=<BasedOn:pi><Nextstyle:pi4>>\n<DefineParaStyle:pi5=<BasedOn:pi><Nextstyle:pi5>>\n<DefineParaStyle:pi6=<BasedOn:pi><Nextstyle:pi6>>\n<DefineParaStyle:pi7=<BasedOn:pi><Nextstyle:pi7>>\n<DefineParaStyle:pi8=<BasedOn:pi><Nextstyle:pi8>>\n<DefineParaStyle:pi9=<BasedOn:pi><Nextstyle:pi9>>\n<DefineParaStyle:pm=<BasedOn:m><Nextstyle:pm>>\n<DefineParaStyle:pmc=<BasedOn:m><Nextstyle:pmc>>\n<DefineParaStyle:pmo=<BasedOn:m><Nextstyle:pmo>>\n<DefineParaStyle:pmr=<BasedOn:m><Nextstyle:pmr>>\n<DefineParaStyle:pr=<BasedOn:m><Nextstyle:pr>>\n<DefineParaStyle:q=<BasedOn:m><Nextstyle:q>>\n<DefineParaStyle:q0=<BasedOn:q><Nextstyle:q0>>\n<DefineParaStyle:q1=<BasedOn:q><Nextstyle:q1>>\n<DefineParaStyle:q2=<BasedOn:q><Nextstyle:q2>>\n<DefineParaStyle:q3=<BasedOn:q><Nextstyle:q3>>\n<DefineParaStyle:q4=<BasedOn:q><Nextstyle:q4>>\n<DefineParaStyle:q5=<BasedOn:q><Nextstyle:q5>>\n<DefineParaStyle:q6=<BasedOn:q><Nextstyle:q6>>\n<DefineParaStyle:q7=<BasedOn:q><Nextstyle:q7>>\n<DefineParaStyle:q8=<BasedOn:q><Nextstyle:q8>>\n<DefineParaStyle:q9=<BasedOn:q><Nextstyle:q9>>\n<DefineParaStyle:qc=<BasedOn:q><Nextstyle:qc>>\n<DefineParaStyle:qm=<BasedOn:q><Nextstyle:qm>>\n<DefineParaStyle:qm0=<BasedOn:qm><Nextstyle:qm0>>\n<DefineParaStyle:qm1=<BasedOn:qm><Nextstyle:qm1>>\n<DefineParaStyle:qm2=<BasedOn:qm><Nextstyle:qm2>>\n<DefineParaStyle:qm3=<BasedOn:qm><Nextstyle:qm3>>\n<DefineParaStyle:qm4=<BasedOn:qm><Nextstyle:qm4>>\n<DefineParaStyle:qm5=<BasedOn:qm><Nextstyle:qm5>>\n<DefineParaStyle:qm6=<BasedOn:qm><Nextstyle:qm6>>\n<DefineParaStyle:qm7=<BasedOn:qm><Nextstyle:qm7>>\n<DefineParaStyle:qm8=<BasedOn:qm><Nextstyle:qm8>>\n<DefineParaStyle:qm9=<BasedOn:qm><Nextstyle:qm9>>\n<DefineParaStyle:qr=<BasedOn:m><Nextstyle:qr>>\n<DefineParaStyle:sp=<BasedOn:m><Nextstyle:sp>>\n<DefineParaStyle:tc=<BasedOn:m><Nextstyle:tc>>\n<DefineParaStyle:tc0=<BasedOn:tc><Nextstyle:tc0>>\n<DefineParaStyle:tc1=<BasedOn:tc><Nextstyle:tc1>>\n<DefineParaStyle:tc2=<BasedOn:tc><Nextstyle:tc2>>\n<DefineParaStyle:tc3=<BasedOn:tc><Nextstyle:tc3>>\n<DefineParaStyle:tc4=<BasedOn:tc><Nextstyle:tc4>>\n<DefineParaStyle:tc5=<BasedOn:tc><Nextstyle:tc5>>\n<DefineParaStyle:tc6=<BasedOn:tc><Nextstyle:tc6>>\n<DefineParaStyle:tc7=<BasedOn:tc><Nextstyle:tc7>>\n<DefineParaStyle:tc8=<BasedOn:tc><Nextstyle:tc8>>\n<DefineParaStyle:tc9=<BasedOn:tc><Nextstyle:tc9>>\n<DefineParaStyle:tcr=<BasedOn:m><Nextstyle:tcr>>\n<DefineParaStyle:tcr0=<BasedOn:tcr><Nextstyle:tcr0>>\n<DefineParaStyle:tcr1=<BasedOn:tcr><Nextstyle:tcr1>>\n<DefineParaStyle:tcr2=<BasedOn:tcr><Nextstyle:tcr2>>\n<DefineParaStyle:tcr3=<BasedOn:tcr><Nextstyle:tcr3>>\n<DefineParaStyle:tcr4=<BasedOn:tcr><Nextstyle:tcr4>>\n<DefineParaStyle:tcr5=<BasedOn:tcr><Nextstyle:tcr5>>\n<DefineParaStyle:tcr6=<BasedOn:tcr><Nextstyle:tcr6>>\n<DefineParaStyle:tcr7=<BasedOn:tcr><Nextstyle:tcr7>>\n<DefineParaStyle:tcr8=<BasedOn:tcr><Nextstyle:tcr8>>\n<DefineParaStyle:tcr9=<BasedOn:tcr><Nextstyle:tcr9>>\n<DefineParaStyle:th=<BasedOn:m><Nextstyle:th>>\n<DefineParaStyle:th0=<BasedOn:th><Nextstyle:th0>>\n<DefineParaStyle:th1=<BasedOn:th><Nextstyle:th1>>\n<DefineParaStyle:th2=<BasedOn:th><Nextstyle:th2>>\n<DefineParaStyle:th3=<BasedOn:th><Nextstyle:th3>>\n<DefineParaStyle:th4=<BasedOn:th><Nextstyle:th4>>\n<DefineParaStyle:th5=<BasedOn:th><Nextstyle:th5>>\n<DefineParaStyle:th6=<BasedOn:th><Nextstyle:th6>>\n<DefineParaStyle:th7=<BasedOn:th><Nextstyle:th7>>\n<DefineParaStyle:th8=<BasedOn:th><Nextstyle:th8>>\n<DefineParaStyle:th9=<BasedOn:th><Nextstyle:th9>>\n<DefineParaStyle:thr=<BasedOn:m><Nextstyle:thr>>\n<DefineParaStyle:thr0=<BasedOn:thr><Nextstyle:thr0>>\n<DefineParaStyle:thr1=<BasedOn:thr><Nextstyle:thr1>>\n<DefineParaStyle:thr2=<BasedOn:thr><Nextstyle:thr2>>\n<DefineParaStyle:thr3=<BasedOn:thr><Nextstyle:thr3>>\n<DefineParaStyle:thr4=<BasedOn:thr><Nextstyle:thr4>>\n<DefineParaStyle:thr5=<BasedOn:thr><Nextstyle:thr5>>\n<DefineParaStyle:thr6=<BasedOn:thr><Nextstyle:thr6>>\n<DefineParaStyle:thr7=<BasedOn:thr><Nextstyle:thr7>>\n<DefineParaStyle:thr8=<BasedOn:thr><Nextstyle:thr8>>\n<DefineParaStyle:thr9=<BasedOn:thr><Nextstyle:thr9>>\n<DefineParaStyle:tr=<BasedOn:m><Nextstyle:tr>>\n\n<DefineParaStyle:mt=<BasedOn:defaultSlab><Nextstyle:mt><cSize:48.8><cLeading:57.6><pKeepWithNext:1><pTextAlignment:Center><pHyphenation:0><pSpaceAfter:7.2>>\n<DefineParaStyle:mt0=<BasedOn:mt><Nextstyle:mt0><cSize:34.5><cLeading:43.2><pBreakBefore:Page><pSpancolumnType:1>>\n<DefineParaStyle:mt1=<BasedOn:mt><Nextstyle:mt1><cSize:34.5><cLeading:43.2>>\n<DefineParaStyle:mt2=<BasedOn:mt1><Nextstyle:mt2><cSize:24.4><cLeading:28.8><pBreakBefore:None><pSpancolumnType:1>>\n<DefineParaStyle:mt3=<BasedOn:mt1><Nextstyle:mt3><cSize:17.3><cLeading:21.6><pSpancolumnType:1>>\n<DefineParaStyle:mt4=<BasedOn:mt1><Nextstyle:mt4><cSize:12.2><cLeading:14.4><cTypeface:Bold>>\n<DefineParaStyle:mt5=<BasedOn:mt1><Nextstyle:mt5><cSize:12.2><cLeading:14.4><cTypeface:Bold Italic>>\n<DefineParaStyle:mt6=<BasedOn:mt1><Nextstyle:mt5><cSize:12.2><cLeading:14.4><cCase:Small Caps>>\n<DefineParaStyle:mt7=<Nextstyle:mt7>>\n<DefineParaStyle:mt8=<Nextstyle:mt8>>\n<DefineParaStyle:mt9=<Nextstyle:mt9>>\n<DefineParaStyle:imt=<BasedOn:mt><Nextstyle:imt>>\n<DefineParaStyle:imt0=<BasedOn:mt0><Nextstyle:imt0><pBreakBefore:Page>>\n<DefineParaStyle:imt1=<BasedOn:mt1><Nextstyle:imt1>>\n<DefineParaStyle:imt2=<BasedOn:mt2><Nextstyle:imt2>>\n<DefineParaStyle:imt3=<BasedOn:mt3><Nextstyle:imt3>>\n<DefineParaStyle:imt4=<BasedOn:mt4><Nextstyle:imt4>>\n<DefineParaStyle:imt5=<BasedOn:mt5><Nextstyle:imt5>>\n<DefineParaStyle:imt6=<BasedOn:mt6><Nextstyle:imt6>>\n<DefineParaStyle:imt7=<BasedOn:mt7><Nextstyle:imt7>>\n<DefineParaStyle:imt8=<BasedOn:mt8><Nextstyle:imt8>>\n<DefineParaStyle:imt9=<BasedOn:mt9><Nextstyle:imt9>>\n<DefineParaStyle:imte=<BasedOn:mt4><Nextstyle:imte>>\n<DefineParaStyle:is=<BasedOn:mt2><Nextstyle:is>>\n<DefineParaStyle:is0=<BasedOn:mt3><Nextstyle:is0><pBreakBefore:Page>>\n<DefineParaStyle:is1=<BasedOn:mt3><Nextstyle:is1>>\n<DefineParaStyle:is2=<BasedOn:mt4><Nextstyle:is2>>\n<DefineParaStyle:is3=<BasedOn:mt5><Nextstyle:is3>>\n<DefineParaStyle:is4=<BasedOn:mt6><Nextstyle:is4>>\n<DefineParaStyle:is5=<BasedOn:is><Nextstyle:is5>>\n<DefineParaStyle:is6=<BasedOn:is><Nextstyle:is6>>\n<DefineParaStyle:is7=<BasedOn:is><Nextstyle:is7>>\n<DefineParaStyle:is8=<BasedOn:is><Nextstyle:is8>>\n<DefineParaStyle:is9=<BasedOn:is><Nextstyle:is9>>\n<DefineParaStyle:mr=<BasedOn:mt4><Nextstyle:mr>>\n<DefineParaStyle:cl=<BasedOn:is1><Nextstyle:cl>>\n<DefineParaStyle:ms=<BasedOn:mt><Nextstyle:ms>>\n<DefineParaStyle:ms0=<BasedOn:mt0><Nextstyle:ms0><pSpancolumnType:1>>\n<DefineParaStyle:ms1=<BasedOn:mt1><Nextstyle:ms1><pSpancolumnType:1>>\n<DefineParaStyle:ms2=<BasedOn:mt2><Nextstyle:ms2>>\n<DefineParaStyle:ms3=<BasedOn:mt3><Nextstyle:ms3>>\n<DefineParaStyle:ms4=<BasedOn:ms3><Nextstyle:ms4><cHorizontalScale:0.71><cVerticalScale:0.71><cTypeface:Bold>>\n<DefineParaStyle:ms5=<BasedOn:ms><Nextstyle:ms5>>\n<DefineParaStyle:ms6=<BasedOn:ms5><Nextstyle:ms6>>\n<DefineParaStyle:ms7=<BasedOn:ms5><Nextstyle:ms7>>\n<DefineParaStyle:ms8=<BasedOn:ms7><Nextstyle:ms8>>\n<DefineParaStyle:ms9=<BasedOn:ms7><Nextstyle:ms9>>\n<DefineParaStyle:mte=<BasedOn:mt><Nextstyle:mte>>\n<DefineParaStyle:mte0=<BasedOn:mt><Nextstyle:mte0>>\n<DefineParaStyle:mte1=<BasedOn:mt><Nextstyle:mte1>>\n<DefineParaStyle:mte2=<BasedOn:mt><Nextstyle:mte2>>\n<DefineParaStyle:mte3=<BasedOn:mt><Nextstyle:mte3>>\n<DefineParaStyle:mte4=<BasedOn:mt><Nextstyle:mte4>>\n<DefineParaStyle:mte5=<BasedOn:mt><Nextstyle:mte5>>\n<DefineParaStyle:mte6=<BasedOn:mt><Nextstyle:mte6>>\n<DefineParaStyle:mte7=<BasedOn:mt><Nextstyle:mte7>>\n<DefineParaStyle:mte8=<BasedOn:mt><Nextstyle:mte8><cSize:0.1><cLeading:0><pBreakBefore:Page>>\n<DefineParaStyle:mte9=<BasedOn:mt><Nextstyle:mte9><cSize:0.1><cLeading:0><pSpancolumnType:1>>\n<DefineParaStyle:qa=<BasedOn:mt><Nextstyle:qa>>\n<DefineParaStyle:r=<BasedOn:mt><Nextstyle:r>>\n<DefineParaStyle:z=<Nextstyle:z>>\n\n<DefineTextVariable:h1=<TextVarType:ParaStyle><tvStyle:h1>>\n<ParaStyle:id>");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view); 
+// ================= Paragraph Styles =======================
+SearchAndReplace.setSearchString("^\\\\([^ ]+?)( |$)");
+SearchAndReplace.setReplaceString("<ParaStyle:$1>");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+// ================= Footnotes =============================
+SearchAndReplace.setSearchString("\\\\f (.) (.+?)\\\\f\\*");
+SearchAndReplace.setReplaceString("<CharStyle:$1><FootnoteStart:><ParaStyle:f>$2<FootnoteEnd:><CharStyle:>");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+// ================ Verse Markers ==========================
+SearchAndReplace.setSearchString("\\\\v\\s([0-9\\-]+)(\\s)");
+SearchAndReplace.setReplaceString("<CharStyle:v>$1<CharStyle:_> <CharStyle:>");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+// ================ Tables ================================
+// ================ Character Styles ========================
+SearchAndReplace.setSearchString("\\\\[^ ]+\\*");
+SearchAndReplace.setReplaceString("<CharStyle:>");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.setSearchString("\\\\([^ ]+) ");
+SearchAndReplace.setReplaceString("<CharStyle:$1>");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+// ================ Variable Text ==========================
+SearchAndReplace.setSearchString("\\[\\{(.+?)\\}\\]");
+SearchAndReplace.setReplaceString("<TextVarName:$1>");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+// === Optional Breakpoints not supported in L1503
+SearchAndReplace.setSearchString("(\\/\\/)");
+SearchAndReplace.setReplaceString(" ");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+// ======================================================
+// ===                           Rinse Cycle                                          ===
+// ======================================================
+SearchAndReplace.setSearchString("[ \\t][ \\t]+");
+SearchAndReplace.setReplaceString(" ");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("\\n\\n+");
+SearchAndReplace.setReplaceString(" \\n");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("(^ +| +$)");
+SearchAndReplace.setReplaceString("");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
