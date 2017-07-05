@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MODE SYSTEM "xmode.dtd">
+<!-- r.sfm.xml version 20170704 -->
+<!-- Catalog Entry 
+<MODE NAME="SFM-Reading(RAB)" FILE="r.sfm.xml" FILE_NAME_GLOB="*.r.sfm"/>
+-->
+<!--
+Jedit Token	USFM Tag
+COMMENT1	
+COMMENT2	
+COMMENT3	title, img
+COMMENT4	page
+DIGIT
+FUNCTION
+INVALID		
+KEYWORD1	
+KEYWORD2	
+KEYWORD3	
+KEYWORD4	
+LABEL		
+LITERAL1		
+LITERAL2		
+LITERAL3		".", "!", "?"
+LITERAL4		
+MARKUP		 
+OPERATOR
+-->
+
+<MODE>
+	<PROPS>
+		<PROPERTY NAME="indentSize" VALUE="4" />
+		<PROPERTY NAME="tabSize" VALUE="4" />
+		<PROPERTY NAME="lineComment" VALUE="\rem " />
+		<PROPERTY NAME="wrap" VALUE="soft" />
+	</PROPS>
+
+	<RULES IGNORE_CASE="FALSE" HIGHLIGHT_DIGITS="TRUE">
+		
+		<EOL_SPAN TYPE="COMMENT3">\title </EOL_SPAN>
+		<EOL_SPAN TYPE="COMMENT3">\img </EOL_SPAN>
+
+		
+		<EOL_SPAN TYPE="COMMENT4">\page </EOL_SPAN>
+		<SPAN TYPE="LITERAL3" NO_LINE_BREAK="TRUE">
+			<BEGIN>. </BEGIN>
+			<END> </END>
+		</SPAN>
+		<SPAN TYPE="LITERAL3" NO_LINE_BREAK="TRUE">
+			<BEGIN>! </BEGIN>
+			<END> </END>
+		</SPAN>
+		<SPAN TYPE="LITERAL3" NO_LINE_BREAK="TRUE">
+			<BEGIN>? </BEGIN>
+			<END> </END>
+		</SPAN>
+			
+		<IMPORT DELEGATE="SFM-Universal(2.4)::MAIN"/>	
+
+	</RULES>
+</MODE>
