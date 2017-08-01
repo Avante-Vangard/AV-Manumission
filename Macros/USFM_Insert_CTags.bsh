@@ -1,0 +1,121 @@
+/*
+ * USFM_Insert_CTags.bsh - a BeanShell macro script for
+ * jEdit text editor - inserts opening and closing USFM tags
+ * around selected text
+ * Copyright 2017 Michael Hart 
+ * 95% (or more) directly from Insert_tags.bsh 
+ * Copyright (C) 2001-2010 
+ * John Gellene <jgellene@nyc.rr.com>, Vadim Voituk <vadim@voituk.com> 
+ * http://community.jedit.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the jEdit program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: Insert_Tag.bsh 21353 2012-03-14 09:46:51Z jojaba_67 $
+ */
+// Localization
+final static String EnterNameTagLabel = jEdit.getProperty("macro.rs.InsertTag.EnterNameTag.label", "Enter name of tag:");
+final static String NotEditableMessage = jEdit.getProperty("macro.rs.general.ErrorNotEditableDialog.message", "Buffer is not editable"); 
+
+// Process
+Map tagsTemplate = new TreeMap() {{
+ 	 put("[", 	"[");
+ 	 put("[{", 	"[{");
+ 	 put("[(", 	"[(");
+ 	 put("{", 	"{");
+ 	 put("<", 	"<");
+ 	 put("(", 	"(");
+ 	 put("ef", 	"\\ef + \\fr \\ft ");
+ 	 put("f", 	"\\f + \\fr \\fk \\ft ");
+ 	 put("fe", 	"\\fe + \ft ");
+ 	 put("fp", 	"\\fp - \ft ");
+ 	 put("fig", 	"\\fig |");
+ 	 put("x",	"\\x + \\xo \\xt "); 
+ 	 put("xdc",	"\\xdc + \\xo \\xt ");
+ 	 put("xnt",	"\\xnt + \\xo \\xt ");
+ 	 put("xot",	"\\xot + \\xo \\xt ");
+}};
+Map tagsTemplatePost = new TreeMap() {{
+ 	 put("[", 	"]");
+ 	 put("{", 	"}");
+ 	 put("[{", 	")]");
+ 	 put("[(", 	")]");
+ 	 put("<", 	">");
+ 	 put("(", 	")");
+ 	 put("fig", 	"|||||\\fig*");
+}};
+
+
+void insertTag()
+{
+	
+	String tag = Macros.input(view, EnterNameTagLabel);
+	if( tag == null || tag.length() == 0) return;
+	String text = textArea.getSelectedText();
+	if(text == null) text = "";
+	
+	int i;
+	String[] tags = tag.split("\\s+");
+	int caret = textArea.getCaretPosition();
+	StringBuilder buff = new StringBuilder();
+	
+	for (i=0; i<tags.length; i++) {
+		String tpl = tagsTemplate.get(tags[i]);
+		if (tpl == null) {
+			buff.append('\\').append(tags[i]).append(' ');
+			caret += tags[i].length() + 2;
+		} 
+		else {
+			buff.append(tpl);
+			caret += tpl.length();
+		}
+	}
+	
+	buff.append(text);
+	
+	for (i=0; i<tags.length; i++) {
+		String tpl = tagsTemplatePost.get(tags[i]);
+		if (tpl == null) {
+			buff.append("\\").append(tags[i]).append('*');
+		} 
+		else {
+			buff.append(tpl);
+		}
+	}
+	
+	textArea.setSelectedText(buff.toString());
+	
+	//if no selected text, put the caret between the tags
+	if(text.length() == 0)
+		textArea.setCaretPosition(caret);
+} 
+
+if(buffer.isReadOnly())
+	Macros.error(view, NotEditableMessage);
+else
+	insertTag();
+
+/*
+	Macro index data (in DocBook format)
+
+<listitem>
+    <para><filename>USFM_Insert_CTags.bsh</filename></para>
+    <abstract><para>
+        Inserts a balanced pair of USFM character tags as supplied in a input dialog.
+    </para></abstract>
+</listitem>
+
+*/
+
+// end USFM_Insert_CTags.bsh
