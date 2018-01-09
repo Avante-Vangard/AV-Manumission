@@ -1,9 +1,9 @@
 // Manumission 1707 - Production 1.0
-// This script should convert most clean e.SFM files into a usable IDtag file.
+// This script should convert most clean p.SFM files into a usable IDtag file.
 // Note that CLEAN means incoming files are:
 // 1. UTF-8 with unix line endings. Other encodings are not verified, but might have success. The script depends heavily on the \n symbol, though, so it is likely that text to be converted needs to change to unix line endings at a minimum. 
 // 2. Every row of text begins with a PARAGRAPH or verse marker. (that is, no return characters that are not followed with a paragraph tag, except possibly the end of file.)
-// Note that e.SFM is a subset/superset of USFM 2.4, with compatibility to some USFM 3.0 enhancements, but not all. Figures, and word tagging are not supported, and embedded tagging is not supported. 
+// Note that p.SFM is a subset/superset of USFM 2.4, with compatibility to some USFM 3.0 enhancements, but not all. Figures, and word tagging are not supported, and embedded tagging is not supported. 
 // ==== Known Issues ====
 // - | This version supports USFM 2.4 except 
 //    | - embedded tags. embedded tags will be tagged but the tags that span them are not supported
