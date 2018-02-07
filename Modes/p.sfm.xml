@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MODE SYSTEM "xmode.dtd">
-<!-- e.usfm.xml version 20170704 -->
+<!-- p.sfm.xml version 20170704 -->
 <!-- Catalog Entry 
-MODE NAME="SFM-Extended(BTL)" FILE="e.sfm.xml" FILE_NAME_GLOB="*.e.sfm">
+<MODE NAME="Plain+Simple (p.sfm)" FILE="p.sfm.xml" FILE_NAME_GLOB="*.p.sfm" /> 
 
 Jedit Token	USFM Tag
 COMMENT1	cat, cat#,  toc, toc#
@@ -233,6 +233,13 @@ OPERATOR
 		<SEQ_REGEXP HASH_CHAR="\n" TYPE="LITERAL4">.+?\\n\*</SEQ_REGEXP>
 		<SEQ_REGEXP HASH_CHAR="\nh" TYPE="LITERAL4">.+?\\nh\*</SEQ_REGEXP>
 		<SEQ_REGEXP HASH_CHAR="\sig " TYPE="LITERAL4">.+?\\sig\*</SEQ_REGEXP>
+
+		<!--
+		<EOL_SPAN TYPE="OPERATOR">\q </EOL_SPAN>
+		<EOL_SPAN TYPE="LABEL">\q1</EOL_SPAN>
+		<EOL_SPAN TYPE="MARKUP">\q2</EOL_SPAN>
+		-->
+
 
 		<EOL_SPAN TYPE="MARKUP">\erq</EOL_SPAN>
 		<EOL_SPAN TYPE="MARKUP">\esb</EOL_SPAN>

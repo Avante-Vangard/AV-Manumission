@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE MODES SYSTEM "catalog.dtd">
+
+<MODES>
+
+<!-- Add lines like the following, one for each edit mode you add: -->
+<!-- <MODE NAME="foo" FILE="foo.xml" FILE_NAME_GLOB="*.foo" /> -->
+
+<MODE NAME="SFM-Reading(RAB)" FILE="r.sfm.xml" FILE_NAME_GLOB="*.r.sfm"/>
+<MODE NAME="SFM-Extended(BTL)" FILE="e.sfm.xml" FILE_NAME_GLOB="*.e.sfm" />
+<MODE NAME="Plain+Simple (p.sfm)" FILE="p.sfm.xml" FILE_NAME_GLOB="*.p.sfm" /> 
+<MODE NAME="USFM (2.4)" FILE="usfm.xml" FILE_NAME_GLOB="*.sfm" />
+<MODE NAME="Plain+Simple (p.sfm)" FILE="p.sfm.xml" FILE_NAME_GLOB="*.p.sfm" /> 
+</MODES>
