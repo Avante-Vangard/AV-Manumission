@@ -1,0 +1,101 @@
+// ================================
+// || MapData 2 USFM || Version B20150812 ||
+// ================================
+// 
+// Purpose: Convert spreadsheet data into Map USFM (Chapter 1 of A2OTH file) 
+//
+// Scope: This script acts on tab separated values from translation.ods language 
+// 		page and converts these values into standard map style USFM.
+//
+// Requires: 	1. Tab separated values already loaded into current buffer
+//			2. jEdit plugin TextTools
+// Provides: Chapter 1 of A2OTH with table data. 
+// 
+// Known Issues: 
+//	1. rem statement out of place
+//	2. sorting is out of sequence to original TMT A2OTH file. 
+//	3. No error checking/hard stops in place, let the buyer beware. 
+//	4. No text normalization (need to follow up dashes->hyphens, quotes -> low ascii)
+//	5. currently produces a non-fatal error, but produces desired output anyway. 
+textArea.goToBufferStart(false);
+SearchAndReplace.setSearchString("^.+ \\t*\\n");
+SearchAndReplace.setReplaceString("");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("^.+ \\t*$");
+SearchAndReplace.setReplaceString("");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("^(.+)\\tN\\s*$");
+SearchAndReplace.setReplaceString("2\\t$1");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("^(.+)\\tO\\s*$");
+SearchAndReplace.setReplaceString("1\\t$1");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+TextToolsSorting.sortLines(textArea,false);
+SearchAndReplace.setSearchString("^\\d\\t");
+SearchAndReplace.setReplaceString("");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("^ (\\\\tr \\\\th1 .+)\\t(.*)\\t(.*)$");
+SearchAndReplace.setReplaceString("$1 \\\\th2 $2 \\\\th3 $3");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("^ +");
+SearchAndReplace.setReplaceString("");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("^([^\\\\].+)\\t(.*)\\t(.*)$");
+SearchAndReplace.setReplaceString("\\\\tr \\\\tc1 $1 \\\\tc2 $2 \\\\tc3 $3");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+textArea.goToBufferStart(false);
+textArea.setSelectedText("\\c 1");
+textArea.insertEnterAndIndent();
+textArea.goToBufferEnd(false);
+textArea.insertEnterAndIndent();
+textArea.setSelectedText("\\c 2");
+textArea.insertEnterAndIndent();
+SearchAndReplace.setSearchString("\\n\\n+");
+SearchAndReplace.setReplaceString("\\n");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+textArea.goToBufferStart(false);

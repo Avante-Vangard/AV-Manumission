@@ -1,0 +1,179 @@
+/*
+ * :mode=beanshell:tabSize=4:indentSize=4:noTabs=false:
+ * :folding=explicit:collapseFolds=1:wrap=none:maxLineLen=80:
+ *
+ * $Source$
+ * Copyright (C) 2003 Robert Fletcher
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+int[] VALUES = new int[] { 1000, 500, 100, 50, 10, 5, 1 };
+char[] SYMBOLS = new char[] { 'm', 'd', 'c', 'l', 'x', 'v', 'i' };
+
+//{{{ toRoman(int) : String
+String toRoman(int value)
+{
+	int div;
+	StringBuffer buf = new StringBuffer();
+	for(int i = 0; i < VALUES.length; i++)
+	{
+		div = value / VALUES[i];
+		if(div == 4)
+		{
+			if(buf.length() == 0 || buf.charAt(buf.length() - 1) != SYMBOLS[i - 1])
+			{
+				if(i == 0)
+				{
+					for(int j = 0; j < div; j++)
+					{
+						buf.append(SYMBOLS[i]);
+					}
+				}
+				else
+				{
+					buf.append(SYMBOLS[i]);
+					buf.append(SYMBOLS[i - 1]);
+				}
+			}
+			else
+			{
+				buf.setCharAt(buf.length() - 1, SYMBOLS[i]);
+				buf.append(SYMBOLS[i - 2]);
+			}
+		}
+		else
+		{
+			for(int j = 0; j < div; j++)
+			{
+				buf.append(SYMBOLS[i]);
+			}
+		}
+		value -= (VALUES[i] * div);
+	}
+	return buf.toString();
+}//}}}
+
+//{{{ parseRoman(char) : int
+int parseRoman(char c)
+{
+	for(int i = 0; i < VALUES.length; i++)
+	{
+		if(c == SYMBOLS[i])
+		{
+			return VALUES[i];
+		}
+	}
+	throw new NumberFormatException();
+}//}}}
+
+//{{{ parseRoman(String) : int
+int parseRoman(String s)
+{
+	int count = 0;        // counts same digits in a row
+	int curr;             // working digit
+	int prev = VALUES[0]; // previous digit
+	int sum = 0;          // running total
+
+	for(int i = 0; i < s.length(); i++)
+	{
+		curr = parseRoman(s.charAt(i));
+		if(prev < curr)
+		{
+			if(count > 0)
+			{
+				throw new NumberFormatException();
+			}
+			if(prev * 5 == curr || prev * 10 == curr)
+			{
+				sum -= prev;
+				sum += (curr - prev);
+			}
+			else
+			{
+				throw new NumberFormatException();
+			}
+		}
+		else
+		{
+			if(curr == prev)
+			{
+				count++;
+			}
+			else
+			{
+				count = 0;
+			}
+			if(count >= 4)
+			{
+				throw new NumberFormatException();
+			}
+			sum += curr;
+		}
+		prev = curr;
+	}
+	return sum;
+}//}}}
+
+String selection = textArea.getSelectedText();
+if(selection == null || selection.length() == 0)
+{
+	Macros.error(view, "There is no selected text.");
+	return;
+}
+try
+{
+	int value = Integer.decode(selection).intValue();
+	if(value < 1)
+	{
+		Macros.error(view, "The selected number is out of range.");
+		return;
+	}
+	textArea.setSelectedText(toRoman(value));
+}
+catch(NumberFormatException e)
+{
+	try
+	{
+		textArea.setSelectedText(Integer.toString(parseRoman(selection), 10));
+	}
+	catch(NumberFormatException e2)
+	{
+		Macros.error(view, "The selection must be either numeric or a valid Roman numeral.");
+	}
+}
+catch(Exception e)
+{
+	Macros.error(view, e.toString());
+}
+
+/*
+
+Macro index data (in DocBook format)
+
+	<listitem>
+		<para><filename>Roman_Numeral.bsh</filename></para>
+		<abstract>
+			<para>
+				Attempts to convert the selection to a Roman numeral if the
+				selection is numeric (as per Integer.decode) or from a Roman
+				numeral to a decimal number otherwise.
+			</para>
+		</abstract>
+	</listitem>
+
+*/
+
+// end Roman_Numeral.bsh
+

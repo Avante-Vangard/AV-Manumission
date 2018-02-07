@@ -1,0 +1,116 @@
+// ================================
+// || USFM 2 MapData || Version B20150812 ||
+// ================================
+// 
+// Purpose: Convert spreadsheet data into Map USFM (Chapter 1 of A2OTH file) 
+//
+// Scope: This script acts on tab separated values from translation.ods language 
+// 		page and converts these values into standard map style USFM.
+//
+// Requires: 	1. A2OTH style map data file, complete or just the OT and NT peripherals
+//			2. jEdit plugin TextTools
+// Provides: Tab separated values pastable into Translations.ods
+// 
+// Known Issues: 
+//	2. sorting is out of sequence for LibreOffice, must resort after paste. 
+//	3. No error checking/hard stops in place, let the buyer beware. 
+//	4. No text normalization (need to follow up dashes->hyphens, quotes -> low ascii)
+//	5. currently produces a non-fatal error, but produces desired output anyway. textArea.goToBufferStart(false);
+textArea.goToBufferStart(false);
+SearchAndReplace.setSearchString("^\\\\periph Old Testament");
+SearchAndReplace.setAutoWrapAround(false);
+SearchAndReplace.setReverseSearch(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.find(view);
+textArea.goToStartOfWhiteSpace(false);
+textArea.goToBufferStart(true);
+textArea.delete();
+textArea.goToBufferStart(false);
+SearchAndReplace.setSearchString("^\\\\c ");
+SearchAndReplace.setAutoWrapAround(false);
+SearchAndReplace.setReverseSearch(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.find(view);
+textArea.goToBufferEnd(true);
+textArea.delete();
+textArea.goToBufferStart(false);
+SearchAndReplace.setSearchString("$");
+SearchAndReplace.setReplaceString("\\t");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+textArea.goToBufferStart(false);
+SearchAndReplace.setSearchString("\\\\periph New Testament");
+SearchAndReplace.setAutoWrapAround(false);
+SearchAndReplace.setReverseSearch(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.find(view);
+textArea.goToBufferEnd(true);
+Registers.cut(textArea,'$');
+textArea.goToBufferStart(false);
+SearchAndReplace.setSearchString("$");
+SearchAndReplace.setReplaceString("O");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+textArea.goToBufferEnd(false);
+EditBus.send(new PositionChanging(editPane));
+Registers.paste(textArea,'$',false);
+SearchAndReplace.setSearchString("\\t$");
+SearchAndReplace.setReplaceString("\\tN");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+textArea.goToBufferStart(false);
+SearchAndReplace.setSearchString("^\\\\tr \\\\tc1 ");
+SearchAndReplace.setReplaceString("");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("^(\\\\)");
+SearchAndReplace.setReplaceString(" $1");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString(" *\\\\t[ch][23] ");
+SearchAndReplace.setReplaceString("\\t");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+SearchAndReplace.setSearchString("^([^\\t]+)(.+)$");
+SearchAndReplace.setReplaceString("$1$2\\n$1 ");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+TextToolsSorting.sortLines(textArea,false);
+textArea.goToBufferStart(false);

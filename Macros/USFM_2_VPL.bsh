@@ -1,0 +1,42 @@
+// This is a recorded macro. First, check over the
+// commands to make sure this is what you intended. Then,
+// save this buffer, and the macro should appear in the
+// Macros menu.
+textArea.goToBufferStart(false);
+textArea.insertEnterAndIndent();
+SearchAndReplace.setSearchString("\\\\(f |rq )");
+SearchAndReplace.setReplaceString("\\n\\\\$1");
+SearchAndReplace.setBeanShellReplace(false);
+SearchAndReplace.setWholeWord(false);
+SearchAndReplace.setIgnoreCase(true);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.replaceAll(view);
+//==
+SearchAndReplace.setSearchString("^\\\\(id |c |v )");
+SearchAndReplace.setReplaceString("~\\\\$1");
+SearchAndReplace.replaceAll(view);
+//==
+SearchAndReplace.setSearchString("~\\\\v (\\d\\d )");
+SearchAndReplace.setReplaceString("~\\\\v 0$1");
+SearchAndReplace.replaceAll(view);
+//==
+SearchAndReplace.setSearchString("~\\\\v (\\d )");
+SearchAndReplace.setReplaceString("~\\\\v 00$1");
+SearchAndReplace.replaceAll(view);
+//==
+SearchAndReplace.setSearchString("~\\\\c (\\d\\d+)");
+SearchAndReplace.setReplaceString("~\\\\c 0$1");
+SearchAndReplace.replaceAll(view);
+//==
+SearchAndReplace.setSearchString("~\\\\c (\\d+)");
+SearchAndReplace.setReplaceString("~\\\\c 00$1");
+SearchAndReplace.replaceAll(view);
+//==
+SearchAndReplace.setSearchString("\\n([^~])");
+SearchAndReplace.setReplaceString("<>$1");
+SearchAndReplace.replaceAll(view);
+//==
+SearchAndReplace.setSearchString("^~");
+SearchAndReplace.setReplaceString("");
+SearchAndReplace.replaceAll(view);
