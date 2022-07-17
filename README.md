@@ -1,3 +1,3 @@
-# jEdit-Bibles
-Files useful for dealing with biblical texts
+# Manumission
+Files useful for converting USFM files into indesign tag files. 
 .
